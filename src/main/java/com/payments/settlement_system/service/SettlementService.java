@@ -39,7 +39,7 @@ public class SettlementService {
         // 4. Deduct the total amount from the payer's account
         payerAccount.setBalance(payerAccount.getBalance().subtract(totalAmount));
         userAccountRepository.save(payerAccount);
-        System.out.println("Deducted: "+totalAmount+" from payer account: "+payerAccount.getUserId()+", New balance: "+payerAccount.getBalance());
+        System.out.println("Deducted: "+totalAmount+" from payer account: "+payerAccount.getUsername()+", New balance: "+payerAccount.getBalance());
 
         //5. Credit each payee's account
         for(PaymentRequestDTO.PayeeDetails payeeDetails : requestDTO.getPayees()){
@@ -51,7 +51,7 @@ public class SettlementService {
 
             payee.setBalance(payee.getBalance().add(amount));
             userAccountRepository.save(payee);
-            System.out.println("Credited " + amount + " to " + payee.getUserId() + ". New balance: " + payee.getBalance());
+            System.out.println("Credited " + amount + " to " + payee.getUsername() + ". New balance: " + payee.getBalance());
         }
 
     }

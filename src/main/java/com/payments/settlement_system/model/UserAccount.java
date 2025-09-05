@@ -25,14 +25,18 @@ import java.util.Collections;
 public class UserAccount implements UserDetails {
 
     @Id
-    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private BigDecimal balance;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String phone_number;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

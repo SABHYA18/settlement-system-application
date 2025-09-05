@@ -4,7 +4,6 @@ import com.payments.settlement_system.model.UserAccount;
 import com.payments.settlement_system.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
@@ -24,22 +23,22 @@ public class DataInitializer implements CommandLineRunner {
 
         // Create User A
         UserAccount userA = new UserAccount();
-        userA.setUserId("A");
+        userA.setUsername("A");
         userA.setBalance(new BigDecimal("2000.00"));
 
         // Create User B
         UserAccount userB = new UserAccount();
-        userB.setUserId("B");
+        userB.setUsername("B");
         userB.setBalance(new BigDecimal("500.00"));
 
         // Create User C
         UserAccount userC = new UserAccount();
-        userC.setUserId("C");
+        userC.setUsername("C");
         userC.setBalance(new BigDecimal("1000.00"));
 
         // Create User D
         UserAccount userD = new UserAccount();
-        userD.setUserId("D");
+        userD.setUsername("D");
         userD.setBalance(new BigDecimal("1500.00"));
 
         // Save all users to the database using the repository
@@ -51,7 +50,7 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Database initialization complete.");
         System.out.println("Current user balances:");
         userAccountRepository.findAll().forEach(user ->
-                System.out.println("- User: " + user.getUserId() + ", Balance: " + user.getBalance())
+                System.out.println("- User: " + user.getUsername() + ", Balance: " + user.getBalance())
         );
     }
 }
