@@ -1,7 +1,6 @@
-package com.payments.settlement_system.service;
+package com.payments.settlement_system.service.securitySvc;
 
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;

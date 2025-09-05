@@ -1,12 +1,11 @@
 package com.payments.settlement_system.controller;
 
-import com.payments.settlement_system.dto.LoginRequestDTO;
-import com.payments.settlement_system.dto.LoginResponseDTO;
-import com.payments.settlement_system.dto.SignupRequestDTO;
-import com.payments.settlement_system.service.AuthService;
+import com.payments.settlement_system.dto.requests.LoginRequestDTO;
+import com.payments.settlement_system.dto.responses.LoginResponseDTO;
+import com.payments.settlement_system.dto.requests.SignupRequestDTO;
+import com.payments.settlement_system.service.securitySvc.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,4 +1,4 @@
-package com.payments.settlement_system.dto;
+package com.payments.settlement_system.dto.requests;
 
 import lombok.Data;
 

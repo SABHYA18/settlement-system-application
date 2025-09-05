@@ -1,14 +1,12 @@
 package com.payments.settlement_system.controller;
 
 
-import com.payments.settlement_system.dto.PaymentRequestDTO;
+import com.payments.settlement_system.dto.requests.PaymentRequestDTO;
 import com.payments.settlement_system.model.UserAccount;
-import com.payments.settlement_system.service.SettlementService;
+import com.payments.settlement_system.service.settlementsvc.SettlementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/settlements")

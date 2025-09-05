@@ -1,7 +1,7 @@
-package com.payments.settlement_system.service;
-import com.payments.settlement_system.dto.LoginResponseDTO;
-import com.payments.settlement_system.dto.LoginRequestDTO;
-import com.payments.settlement_system.dto.SignupRequestDTO;
+package com.payments.settlement_system.service.securitySvc;
+import com.payments.settlement_system.dto.responses.LoginResponseDTO;
+import com.payments.settlement_system.dto.requests.LoginRequestDTO;
+import com.payments.settlement_system.dto.requests.SignupRequestDTO;
 import com.payments.settlement_system.model.UserAccount;
 import com.payments.settlement_system.repository.UserAccountRepository;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,7 +1,7 @@
-package com.payments.settlement_system.service;
+package com.payments.settlement_system.service.settlementsvc;
 
 
-import com.payments.settlement_system.dto.PaymentRequestDTO;
+import com.payments.settlement_system.dto.requests.PaymentRequestDTO;
 import com.payments.settlement_system.model.UserAccount;
 import com.payments.settlement_system.repository.UserAccountRepository;
 import jakarta.transaction.Transactional;
@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.payments.settlement_system.service;
+package com.payments.settlement_system.service.serviceImpl;
 
 import com.payments.settlement_system.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.payments.settlement_system.dto;
+package com.payments.settlement_system.dto.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
