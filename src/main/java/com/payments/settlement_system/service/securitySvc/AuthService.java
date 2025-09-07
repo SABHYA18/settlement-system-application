@@ -2,16 +2,21 @@ package com.payments.settlement_system.service.securitySvc;
 import com.payments.settlement_system.dto.responses.LoginResponseDTO;
 import com.payments.settlement_system.dto.requests.LoginRequestDTO;
 import com.payments.settlement_system.dto.requests.SignupRequestDTO;
+import com.payments.settlement_system.model.BlocklistedToken;
 import com.payments.settlement_system.model.UserAccount;
+import com.payments.settlement_system.repository.BlocklistedTokenRepository;
 import com.payments.settlement_system.repository.UserAccountRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -21,13 +26,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final BlocklistedTokenRepository blocklistedTokenRepository;
 
     /**
      * Registers a new user in the system.
      * @param request The sign-up request containing username and password.
      * @return The newly created UserAccount entity.
      */
-    public UserAccount userSignup(SignupRequestDTO signupRequestDTO){
+    public ResponseEntity<String> userSignup(SignupRequestDTO signupRequestDTO){
         // check if the username is already taken
         if(userAccountRepository.existsById(signupRequestDTO.getUsername())){
             throw new IllegalStateException("Username "+ signupRequestDTO.getUsername()+" is already taken. Please choose another one.");
@@ -40,8 +46,8 @@ public class AuthService {
                 .phone_number(signupRequestDTO.getPhone_number())
                 .balance(BigDecimal.ZERO)
                 .build();
-
-        return userAccountRepository.save(newUser);
+        userAccountRepository.save(newUser);
+        return ResponseEntity.ok("User registered successfully");
     }
     /**
      * Authenticates a user and returns a JWT token.
@@ -49,19 +55,33 @@ public class AuthService {
      * @return A DTO containing the JWT token.
      */
 
-    public LoginResponseDTO userLogin(LoginRequestDTO loginRequestDTO){
+    public LoginResponseDTO userLogin(LoginRequestDTO loginRequestDTO) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDTO.getUsername(),
                         loginRequestDTO.getPassword()
                 )
         );
-        // proceed to token generation after authentication
-        UserDetails userDetails = userAccountRepository.findById(loginRequestDTO.getUsername())
-                .orElseThrow(()->new IllegalStateException("User not found after authentication. This should not happen"));
+        var user = userAccountRepository.findById(loginRequestDTO.getUsername())
+                .orElseThrow(() -> new IllegalStateException("User not found after authentication."));
+        var jwtToken = jwtService.generateToken(user);
+        return LoginResponseDTO.builder().token(jwtToken).build();
+    }
 
-        String jwtToken = jwtService.generateToken(userDetails);
-        return new LoginResponseDTO(jwtToken);
+    /**
+     * Invalidates a user's JWT by adding it to the blocklist.
+     * This effectively logs the user out from all devices using that token.
+     * @param token The JWT from the "Authorization: Bearer " header.
+     */
+    public void logout(String token) {
+        var expiryDate = jwtService.extractExpiration(token);
+        var expiryLocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(expiryDate.getTime()), ZoneId.systemDefault());
+
+        var blocklistedToken = BlocklistedToken.builder()
+                .token(token)
+                .expiryDate(expiryLocalDateTime)
+                .build();
+        blocklistedTokenRepository.save(blocklistedToken);
     }
 
 }

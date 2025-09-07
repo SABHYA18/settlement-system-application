@@ -54,9 +54,4 @@ public class SettlementService {
 
     }
 
-    public UserAccount getUserBalance(String userId){
-        return userAccountRepository.findById(userId)
-                .orElseThrow(()->new IllegalStateException("User account "+userId+" not found."));
-
-    }
 }
