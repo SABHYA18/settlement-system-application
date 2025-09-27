@@ -8,12 +8,16 @@ import com.payments.settlement_system.service.securitySvc.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/auth")
@@ -22,17 +26,29 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDTO signupRequestDTO){
+    public ResponseEntity<Map<String, Object>> signup(@Valid @RequestBody SignupRequestDTO signupRequestDTO){
+        Map<String, Object> response = new HashMap<>();
         try{
-            return authService.userSignup(signupRequestDTO);
-        }catch (IllegalStateException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            authService.userSignup(signupRequestDTO);
+            response.put("message", "User registered successfully and wallet created!");
+            response.put("status", "success");
+            response.put("statusCode", HttpStatus.OK.value());
+            return ResponseEntity.ok(response);
+        } catch (IllegalStateException e){
+            response.put("message", e.getMessage());
+            response.put("status", "error");
+            response.put("statusCode", HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.ok(response);
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO){
-       return ResponseEntity.ok(authService.userLogin(loginRequestDTO));
+    public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO){
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User Logged in successfully");
+        response.put("status", "success");
+        response.put("token", authService.userLogin(loginRequestDTO).getToken());
+       return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
@@ -48,4 +64,4 @@ public class AuthController {
 
 }
 
-// now create an endpoint for updating the balance from 0 to the desired value.
+

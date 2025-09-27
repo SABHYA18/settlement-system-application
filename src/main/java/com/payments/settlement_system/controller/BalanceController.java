@@ -3,6 +3,7 @@ package com.payments.settlement_system.controller;
 import com.payments.settlement_system.dto.requests.BalanceRequestDTO;
 import com.payments.settlement_system.dto.responses.BalanceResponseDTO;
 import com.payments.settlement_system.model.UserAccount;
+import com.payments.settlement_system.model.Wallet;
 import com.payments.settlement_system.service.settlementsvc.BalanceSvc;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/balance")
+@RequestMapping("api/wallet/balance")
 public class BalanceController {
     private final BalanceSvc balanceSvc;
 
@@ -30,12 +31,12 @@ public class BalanceController {
     @GetMapping("/fetch-balance/{userName}")
     public ResponseEntity<?> getBalance(@PathVariable String userName){
         try{
-            UserAccount userAccount = balanceSvc.getUserBalance(userName);
+            Wallet wallet = balanceSvc.getUserBalance(userName);
 
             Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("username", userAccount.getUsername());
-            responseBody.put("name", userAccount.getName());
-            responseBody.put("balance", userAccount.getBalance());
+            responseBody.put("username", wallet.getUserAccount().getUsername());
+            responseBody.put("name", wallet.getUserAccount().getName());
+            responseBody.put("balance", wallet.getBalance());
 
             return ResponseEntity.ok(responseBody);
         }catch (IllegalStateException e){
@@ -44,5 +45,4 @@ public class BalanceController {
             return ResponseEntity.status(500).body("An unexpected error occurred: "+e.getMessage());
         }
     }
-    // initial balance request, if a new customer provide him 1000 wallet balance as signup bonus
 }

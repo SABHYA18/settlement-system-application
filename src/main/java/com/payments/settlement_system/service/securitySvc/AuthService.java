@@ -4,6 +4,7 @@ import com.payments.settlement_system.dto.requests.LoginRequestDTO;
 import com.payments.settlement_system.dto.requests.SignupRequestDTO;
 import com.payments.settlement_system.model.BlocklistedToken;
 import com.payments.settlement_system.model.UserAccount;
+import com.payments.settlement_system.model.Wallet;
 import com.payments.settlement_system.repository.BlocklistedTokenRepository;
 import com.payments.settlement_system.repository.UserAccountRepository;
 import org.springframework.http.ResponseEntity;
@@ -33,21 +34,30 @@ public class AuthService {
      * @param request The sign-up request containing username and password.
      * @return The newly created UserAccount entity.
      */
-    public ResponseEntity<String> userSignup(SignupRequestDTO signupRequestDTO){
+    public UserAccount userSignup(SignupRequestDTO signupRequestDTO){
+
         // check if the username is already taken
         if(userAccountRepository.existsById(signupRequestDTO.getUsername())){
             throw new IllegalStateException("Username "+ signupRequestDTO.getUsername()+" is already taken. Please choose another one.");
         }
-
+        // create new user account
         UserAccount newUser = UserAccount.builder()
                 .username(signupRequestDTO.getUsername())
                 .password(passwordEncoder.encode(signupRequestDTO.getPassword()))
                 .name(signupRequestDTO.getName())
                 .phone_number(signupRequestDTO.getPhone_number())
-                .balance(BigDecimal.ZERO)
                 .build();
-        userAccountRepository.save(newUser);
-        return ResponseEntity.ok("User registered successfully");
+
+        // create new wallet for the user
+        Wallet wallet = Wallet.builder()
+                .userAccount(newUser)
+                .balance(BigDecimal.ZERO)
+                .lastUpdatedAt(LocalDateTime.now())
+                .build();
+
+        newUser.setWallet(wallet);  // set wallet to the user
+        return userAccountRepository.save(newUser); // save user (and wallet due to cascade)
+
     }
     /**
      * Authenticates a user and returns a JWT token.
@@ -62,8 +72,13 @@ public class AuthService {
                         loginRequestDTO.getPassword()
                 )
         );
+        // fetch user details
         var user = userAccountRepository.findById(loginRequestDTO.getUsername())
                 .orElseThrow(() -> new IllegalStateException("User not found after authentication."));
+        // set last login timestamp
+        user.setLastLoginTimestamp(LocalDateTime.now());
+        userAccountRepository.save(user);
+        // generate JWT
         var jwtToken = jwtService.generateToken(user);
         return LoginResponseDTO.builder().token(jwtToken).build();
     }

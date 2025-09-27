@@ -1,13 +1,10 @@
 package com.payments.settlement_system.dto.responses;
 
-import com.payments.settlement_system.model.UserAccount;
+import com.payments.settlement_system.model.Wallet;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.connector.Response;
-import org.springframework.cglib.core.Local;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -21,11 +18,11 @@ public class BalanceResponseDTO {
     private BigDecimal updatedBalance;
     private LocalDateTime timestamp;
 
-    public static BalanceResponseDTO fromEntity(UserAccount userAccount){
+    public static BalanceResponseDTO fromWallet(Wallet wallet){
         return BalanceResponseDTO.builder()
-                .updatedBalance(userAccount.getBalance())
-                .name(userAccount.getName())
-                .username(userAccount.getUsername())
+                .username(wallet.getUserAccount().getUsername())
+                .name(wallet.getUserAccount().getName())
+                .updatedBalance(wallet.getBalance())
                 .timestamp(LocalDateTime.now())
                 .build();
     }

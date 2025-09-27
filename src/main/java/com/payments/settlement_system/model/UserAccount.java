@@ -1,10 +1,7 @@
 package com.payments.settlement_system.model;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +9,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 @Entity
-@Table(name = "user_accounts")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,17 +27,19 @@ public class UserAccount implements UserDetails {
     private String password;
 
     @Column(nullable = false)
-    private BigDecimal balance;
-
-    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
     private String phone_number;
 
+    private LocalDateTime lastLoginTimestamp;
+
+    @OneToOne(mappedBy = "userAccount", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Wallet wallet;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return List.of();
     }
 
     @Override

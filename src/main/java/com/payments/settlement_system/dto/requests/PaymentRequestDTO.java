@@ -12,12 +12,12 @@ import java.util.List;
 @Data
 public class PaymentRequestDTO {
 
-    private String payerId;
+    private String payerUsername; // Username of the payer
     private List<PayeeDetails> payees; // List of maps with keys "payeeId" and "amount"
 
     @Data
     public static class PayeeDetails{
-        private String payeeId;
+        private String payeeUserName;
         private BigDecimal amount;
     }
 
