@@ -1,6 +1,7 @@
 package com.payments.settlement_system.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class UserAccount implements UserDetails {
     private String name;
 
     @Column(nullable = false, unique = true)
+    @JsonProperty("phoneNumber")
     private String phone_number;
 
     private LocalDateTime lastLoginTimestamp;

@@ -24,22 +24,21 @@ public class DataInitializer implements CommandLineRunner {
         // Create User A
         UserAccount userA = new UserAccount();
         userA.setUsername("A");
-        userA.setBalance(new BigDecimal("2000.00"));
-
+        userA.getWallet().setBalance(new BigDecimal("2000.00"));
         // Create User B
         UserAccount userB = new UserAccount();
         userB.setUsername("B");
-        userB.setBalance(new BigDecimal("500.00"));
+        userB.getWallet().setBalance(new BigDecimal("500.00"));
 
         // Create User C
         UserAccount userC = new UserAccount();
         userC.setUsername("C");
-        userC.setBalance(new BigDecimal("1000.00"));
+        userC.getWallet().setBalance(new BigDecimal("1000.00"));
 
         // Create User D
         UserAccount userD = new UserAccount();
         userD.setUsername("D");
-        userD.setBalance(new BigDecimal("1500.00"));
+        userD.getWallet().setBalance(new BigDecimal("1500.00"));
 
         // Save all users to the database using the repository
         userAccountRepository.save(userA);
@@ -50,7 +49,7 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Database initialization complete.");
         System.out.println("Current user balances:");
         userAccountRepository.findAll().forEach(user ->
-                System.out.println("- User: " + user.getUsername() + ", Balance: " + user.getBalance())
+                System.out.println("- User: " + user.getUsername() + ", Balance: " + user.getWallet().getBalance())
         );
     }
 }

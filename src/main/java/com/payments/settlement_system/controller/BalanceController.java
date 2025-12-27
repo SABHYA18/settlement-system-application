@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/wallet/balance")
+@RequestMapping("/api/wallet/balance")
 public class BalanceController {
     private final BalanceSvc balanceSvc;
 

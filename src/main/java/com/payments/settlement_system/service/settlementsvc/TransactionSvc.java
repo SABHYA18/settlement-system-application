@@ -4,7 +4,6 @@ import com.payments.settlement_system.dto.responses.TransactionResponseDTO;
 import com.payments.settlement_system.model.Wallet;
 import com.payments.settlement_system.repository.TransactionRepository;
 import com.payments.settlement_system.repository.WalletRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class TransactionSvc {
                 .orElseThrow(()->new IllegalStateException("Wallet not found for user: "+username));
 
         // 2. Fetch all transactions for the wallet
-        return transactionRepository.findByWalletIdOrderByTimeStampDesc(wallet.getId())
+        return transactionRepository.findByWalletIdOrderByTimestampDesc(wallet.getId())
                 .stream()
                 .map(TransactionResponseDTO::fromTransaction)
                 .collect(Collectors.toList());

@@ -1,7 +1,7 @@
 package com.payments.settlement_system.dto.responses;
 
 import com.payments.settlement_system.model.Transaction;
-import com.payments.settlement_system.model.TransactionType;
+import com.payments.settlement_system.enums.TransactionType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,7 +15,7 @@ public class TransactionResponseDTO {
     private TransactionType type;
     private BigDecimal amount;
     private String description;
-    private LocalDateTime timeStamp;
+    private LocalDateTime timestamp;
 
     public static TransactionResponseDTO fromTransaction(Transaction transaction){
         return TransactionResponseDTO.builder()
@@ -23,7 +23,7 @@ public class TransactionResponseDTO {
                 .type(transaction.getType())
                 .amount(transaction.getAmount())
                 .description(transaction.getDescription())
-                .timeStamp(transaction.getTimestamp())
+                .timestamp(transaction.getTimestamp())
                 .build();
     }
 }

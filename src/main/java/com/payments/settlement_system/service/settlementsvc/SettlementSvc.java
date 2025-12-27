@@ -3,7 +3,7 @@ package com.payments.settlement_system.service.settlementsvc;
 
 import com.payments.settlement_system.dto.requests.PaymentRequestDTO;
 import com.payments.settlement_system.model.Transaction;
-import com.payments.settlement_system.model.TransactionType;
+import com.payments.settlement_system.enums.TransactionType;
 import com.payments.settlement_system.model.UserAccount;
 import com.payments.settlement_system.model.Wallet;
 import com.payments.settlement_system.repository.TransactionRepository;
@@ -11,11 +11,13 @@ import com.payments.settlement_system.repository.UserAccountRepository;
 import com.payments.settlement_system.repository.WalletRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SettlementSvc {
@@ -50,7 +52,7 @@ public class SettlementSvc {
         payerWallet.setBalance(payerWallet.getBalance().subtract(totalAmount));
         payerWallet.setLastUpdatedAt(LocalDateTime.now());
         walletRepository.save(payerWallet);
-        System.out.println("Deducted: "+totalAmount+" from payer account: "+payerAccount.getUsername()+", New balance: "+payerAccount.getBalance());
+        System.out.println("Deducted: "+totalAmount+" from payer account: "+payerAccount.getUsername()+", New balance: "+payerWallet.getBalance());
 
         // 5. Set the "PAYMENT_SENT" transaction for the payer
         String sentDescription = "Sent a total of "+totalAmount+" to "+requestDTO.getPayees().size()+" payee(s).";

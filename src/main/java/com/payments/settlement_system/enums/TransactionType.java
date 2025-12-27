@@ -1,4 +1,4 @@
-package com.payments.settlement_system.model;
+package com.payments.settlement_system.enums;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;

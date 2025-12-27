@@ -1,16 +1,13 @@
 package com.payments.settlement_system.service.settlementsvc;
 
-import com.payments.settlement_system.dto.requests.BalanceRequestDTO;
 import com.payments.settlement_system.dto.responses.BalanceResponseDTO;
 import com.payments.settlement_system.model.Transaction;
-import com.payments.settlement_system.model.TransactionType;
-import com.payments.settlement_system.model.UserAccount;
+import com.payments.settlement_system.enums.TransactionType;
 import com.payments.settlement_system.model.Wallet;
 import com.payments.settlement_system.repository.TransactionRepository;
 import com.payments.settlement_system.repository.UserAccountRepository;
 import com.payments.settlement_system.repository.WalletRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

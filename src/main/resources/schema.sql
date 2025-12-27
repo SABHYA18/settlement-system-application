@@ -2,9 +2,18 @@
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS token_blocklist;
 DROP TABLE IF EXISTS wallets;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user_accounts;
 
--- Create the users table for identity and profile information
+-- Create the user_accounts table for identity and profile information
+CREATE TABLE user_accounts (
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(255) NOT NULL UNIQUE,
+    last_login_timestamp DATETIME NULL,
+    PRIMARY KEY (username)
+);
+
 CREATE TABLE users (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
